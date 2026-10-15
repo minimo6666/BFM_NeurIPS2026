@@ -21,7 +21,7 @@ find /path/to/anaconda3/envs/BFM/bin -type f \
   -exec sed -i \
   's|/home/minimo/.conda/envs/BFM/bin|/path/to/anaconda3/envs/BFM/bin|g' {} +
 
-conda activate /path/to/anaconda3/envs/BFM
+conda activate BFM
 ```
 
 ## Binary Autoencoder
