@@ -1,4 +1,4 @@
-"""Binary Flow Matching with flip prediction and plug-in reverse transitions."""
+"""Bernoulli Flow Models with flip prediction and plug-in reverse transitions."""
 
 from __future__ import annotations
 
