@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import random
 from pathlib import Path
 
@@ -48,14 +49,10 @@ def build_dataset(name: str, data_root: str, image_size: int = 256):
                 )
     elif name == "churches":
         _require_lsun_class(root, "church_outdoor_train_lmdb")
-        dataset = torchvision.datasets.LSUN(
-            str(root), classes=["church_outdoor_train"], transform=transform
-        )
+        dataset = _build_lsun_dataset(root, "church_outdoor_train", transform)
     elif name == "bedrooms":
         _require_lsun_class(root, "bedroom_train_lmdb")
-        dataset = torchvision.datasets.LSUN(
-            str(root), classes=["bedroom_train"], transform=transform
-        )
+        dataset = _build_lsun_dataset(root, "bedroom_train", transform)
     else:
         raise ValueError(f"Unknown dataset {name!r}; choose from {SUPPORTED_DATASETS}")
 
@@ -71,6 +68,30 @@ def _require_lsun_class(root: Path, directory_name: str) -> None:
             f"Missing {expected}. Unzip the corresponding LSUN *_lmdb.zip "
             "archive directly below --data_root."
         )
+
+
+def _build_lsun_dataset(root: Path, class_name: str, transform):
+    import fcntl
+
+    cache_root = Path(
+        os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")
+    ).expanduser()
+    cache_dir = cache_root / "bernoulli_flow_models" / "lsun"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    lock_path = cache_dir / f"{class_name}.lock"
+
+    with lock_path.open("a", encoding="utf-8") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        working_directory = Path.cwd()
+        try:
+            os.chdir(cache_dir)
+            dataset = torchvision.datasets.LSUN(
+                str(root), classes=[class_name], transform=transform
+            )
+        finally:
+            os.chdir(working_directory)
+            fcntl.flock(lock, fcntl.LOCK_UN)
+    return dataset
 
 
 def _seed_worker(worker_id: int) -> None:

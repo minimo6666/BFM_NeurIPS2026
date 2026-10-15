@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+/_cache_*lmdb
 /pretrained/
 /runs/
 /data/
