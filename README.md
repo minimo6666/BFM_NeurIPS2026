@@ -1,6 +1,6 @@
 # Bernoulli Flow Models
 
-**Accepted at NeurIPS 2026 as a poster.**
+🚀🎉 **Accepted at NeurIPS 2026 as a poster.** 🎉🚀
 
 This is the official PyTorch implementation of
 [Bernoulli Flow Models: Self-Consistent Generative Modeling for Binary Data](https://arxiv.org/abs/2610.11362).
