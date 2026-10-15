@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+/pretrained/
+/runs/
+/data/
+/samples/
+/temp/
+*.pt
+*.pth
+*.th
+*.npy
+*.log
+开源任务.md
